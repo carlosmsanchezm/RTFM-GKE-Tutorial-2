@@ -1,0 +1,24 @@
+name: podinfo
+
+image:
+  repository: ghcr.io/stefanprodan/podinfo
+  tag: latest
+
+replicaCount: 2
+
+blueGreen:
+  blue:
+    replicaCount: 2
+    tag: 5.1.4
+  green:
+    replicaCount: 2
+    tag: 5.1.4
+
+canary:
+  replicaCount: 1
+  tag: 5.1.5
+
+ingress:
+  host: podinfo.example.com
+  annotations:
+    nginx.ingress.kubernetes.io/rewrite-target: /
