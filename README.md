@@ -65,19 +65,19 @@ This guide provides step-by-step instructions on how to set up a GCP project, cr
 
 These commands will display the current state of the resources and any relevant events.
     
-    ```
-    kubectl get deployments
-    kubectl get pods
-    kubectl get events
-    ```
+```
+kubectl get deployments
+kubectl get pods
+kubectl get events
+```
     
 7. To view the logs of a specific pod, use the following command:
 
 Replace `<pod-name>` with the actual name of the pod you want to inspect.
     
-    ```
-    kubectl logs <pod-name>
-    ```
+```
+kubectl logs <pod-name>
+```
     
 
 By observing the deployments, pods, and logs using the GKE console and command line, you can gain insights into the behavior of your blue/green and canary deployments. Pay attention to the events and logs to understand how the deployments progress and how traffic is distributed between the different versions of the application.
@@ -303,24 +303,24 @@ To access the Podinfo application using the ingress hostname, you need to obtain
 
 Look for the `ADDRESS` column in the output. In this example, the external IP address is `35.188.184.5`.
     
-    ```
-    kubectl get ingress
-    ```
+ ```
+ kubectl get ingress
+ ```
     
 2. Open your local `/etc/hosts` file with a text editor (requires administrator privileges):
     - On Linux or macOS:
         
-    ```
-    sudo nano /etc/hosts
-    ```
+ ```
+ sudo nano /etc/hosts
+ ```
         
 3. Add the following line to the `/etc/hosts` file:
 
 Replace `35.188.184.5` with the external IP address you obtained in step 1.
     
-    ```
-    35.188.184.5 podinfo.example.com
-    ```
+ ```
+ 35.188.184.5 podinfo.example.com
+ ```
     
 4. Save the changes to the `/etc/hosts` file.
     - On Linux or macOS:
@@ -334,10 +334,10 @@ Note: Editing the `/etc/hosts` file requires administrator privileges. If you do
 
 1. Uninstall the blue and green deployments:
     
-    ```
-    helm uninstall podinfo-blue
-    helm uninstall podinfo-green
-    ```
+ ```
+ helm uninstall podinfo-blue
+ helm uninstall podinfo-green
+ ```
     
 2. Install the production deployment using Helm:
     
