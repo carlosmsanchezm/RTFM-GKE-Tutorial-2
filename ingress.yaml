@@ -1,18 +1,20 @@
+# ingress.yaml
 apiVersion: networking.k8s.io/v1
 kind: Ingress
 metadata:
-  name: {{ .Values.name }}-ingress
+  name: podinfo-ingress
   annotations:
-{{ toYaml .Values.ingress.annotations | indent 4 }}
+    nginx.ingress.kubernetes.io/rewrite-target: /
 spec:
+  ingressClassName: nginx
   rules:
-    - host: {{ .Values.ingress.host }}
+    - host: podinfo.example.com
       http:
         paths:
           - path: /
             pathType: Prefix
             backend:
               service:
-                name: {{ .Values.name }}-service
+                name: podinfo-service
                 port:
                   number: 80

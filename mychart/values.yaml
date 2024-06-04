@@ -1,23 +1,31 @@
 name: podinfo
-
 image:
   repository: ghcr.io/stefanprodan/podinfo
-  tag: latest
-
-replicaCount: 2
-
 blueGreen:
   blue:
     replicaCount: 2
     tag: 5.1.4
+    color: "#34577c"
   green:
     replicaCount: 2
     tag: 5.1.4
-
+    color: "#00ff00"
 canary:
   replicaCount: 1
-  tag: 5.1.5
-
+  tag: 5.1.4
+  color: "#ff9900"
+prod:
+  replicaCount: 9
+  tag: 5.1.4
+  color: "#0000ff"
+serviceAccount:
+  create: false
+  name: ""
+  annotations: {}
+  automount: true
+service:
+  port: 80
+  targetPort: 9898
 ingress:
   host: podinfo.example.com
   annotations:

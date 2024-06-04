@@ -1,24 +1,45 @@
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: {{ .Values.name }}-{{ .Values.color }}
+  name: {{ .Values.name }}-{{ .Values.deploymentType }}
   labels:
     app: {{ .Values.name }}
-    version: {{ .Values.color }}
+    version: {{ .Values.deploymentType }}
 spec:
-  replicas: {{ .Values.replicaCount }}
+  {{- if or (eq .Values.deploymentType "blue") (eq .Values.deploymentType "green") }}
+  replicas: {{ index .Values.blueGreen .Values.deploymentType "replicaCount" }}
+  {{- else if eq .Values.deploymentType "canary" }}
+  replicas: {{ .Values.canary.replicaCount }}
+  {{- else if eq .Values.deploymentType "prod" }}
+  replicas: {{ .Values.prod.replicaCount }}
+  {{- end }}
   selector:
     matchLabels:
       app: {{ .Values.name }}
-      version: {{ .Values.color }}
+      version: {{ .Values.deploymentType }}
   template:
     metadata:
       labels:
         app: {{ .Values.name }}
-        version: {{ .Values.color }}
+        version: {{ .Values.deploymentType }}
     spec:
       containers:
         - name: {{ .Values.name }}
-          image: "{{ .Values.image.repository }}:{{ .Values.image.tag }}"
+          {{- if or (eq .Values.deploymentType "blue") (eq .Values.deploymentType "green") }}
+          image: "{{ .Values.image.repository }}:{{ index .Values.blueGreen .Values.deploymentType "tag" }}"
+          {{- else if eq .Values.deploymentType "canary" }}
+          image: "{{ .Values.image.repository }}:{{ .Values.canary.tag }}"
+          {{- else if eq .Values.deploymentType "prod" }}
+          image: "{{ .Values.image.repository }}:{{ .Values.prod.tag }}"
+          {{- end }}
           ports:
             - containerPort: 9898
+          env:
+            - name: PODINFO_UI_COLOR
+              {{- if or (eq .Values.deploymentType "blue") (eq .Values.deploymentType "green") }}
+              value: "{{ index .Values.blueGreen .Values.deploymentType "color" }}"
+              {{- else if eq .Values.deploymentType "canary" }}
+              value: "{{ .Values.canary.color }}"
+              {{- else if eq .Values.deploymentType "prod" }}
+              value: "{{ .Values.prod.color }}"
+              {{- end }}

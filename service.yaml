@@ -1,11 +1,11 @@
+# service.yaml
 apiVersion: v1
 kind: Service
 metadata:
-  name: {{ .Values.name }}-service
+  name: podinfo-service
 spec:
   selector:
-    app: {{ .Values.name }}
-    version: blue
+    app: podinfo
   ports:
     - protocol: TCP
       port: 80
