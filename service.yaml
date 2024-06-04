@@ -6,6 +6,7 @@ metadata:
 spec:
   selector:
     app: podinfo
+    version: blue
   ports:
     - protocol: TCP
       port: 80
